@@ -1,35 +1,48 @@
 public class Conversor {
 	private String numBinario = "";
 	
-	public Conversor(){
+	public Conversor(){ //construtor vazio
 	}
 	
 	public String DecimalParaQualquerBase(double numDecimal, int base){
-		if (numDecimal == 0){
-			return "0";
-		}
-		
-		int inteiro;
+		String resultadoBinarioInteiro = "";
+		String resultadoBinFrac = "";
+		int inteiro, inteiroFrac;
 		double fracionario;
 		
+		//separando a parte inteira
 		inteiro = (int)numDecimal;
+		
+		//separando parte fracionaria
 		fracionario = Math.round((numDecimal - (int)numDecimal)*100);
+		fracionario /= 100;
 		
-		
-        while(inteiro > 0) {
-            numBinario = (numDecimal % base) + numBinario;
-            numDecimal /= base;
-        }
-        
-        if (fracionario != 0){
-        	while (fracionario > 50){
-        		// colocar a conta para parte fracionaria
-        		// pelo que eu tava vendo no codigo do victor, tem que converter pra char
-        		// acho que pela mesma "regra" do string.. nao tenho certeza
-        	}
-        	
-        	
-        }
-        fracionario /= 100;
-		return numBinario;
+		try{
+			if (numDecimal == 0){
+				return "0"; //se o numero a ser convertido for = 0, o resultado é 0 né haha
+			}else{
+			        while(inteiro > 0) { //convertendo parte inteira do número
+			        	resultadoBinarioInteiro = (inteiro % base) + resultadoBinarioInteiro;
+			            inteiro /= base;
+			        }
+			        
+			        if (fracionario != 0 && fracionario > 0){
+			        	while (fracionario > 0){ //verificando se o numero nao é inteiro
+			        		// multiplica 0.XX, pega a parte inteira do resultado
+			        		// ARRUMEI ESSE CARALHO!! UFA
+			        		fracionario *= base;
+			        		inteiroFrac = (int)fracionario;
+			        		resultadoBinFrac = inteiroFrac + resultadoBinFrac;
+			        		fracionario = Math.round((fracionario - (int)fracionario)*100);
+			        		fracionario /= 100;
+			        	}
+			        }
+			}
+		}
+		catch (Exception e){
+			if (base == 0 || base < 0){ //vai que o engraçadinho coloca base 0 pra testar né ahaha
+				System.out.println(e.getMessage() + "/n Base digitada é inválida. Favor escolher uma base positiva.");
+			}
+		}
+		return resultadoBinarioInteiro + resultadoBinFrac; // ta certo esse retorno aqui? nao tenho certeza
 	}
