@@ -26,21 +26,21 @@ public class Conversor {
 			            inteiro /= base;
 			        }
 			        
-			        if (fracionario != 0 && fracionario > 0){ //verificando se o numero nao é inteiro
-			        	while (fracionario > 0){ // convertendo a parte fracionaira
+			        if (fracionario != 0 && fracionario > 0){
+			        	while (fracionario > 0){ //verificando se o numero nao é inteiro
 			        		// multiplica 0.XX, pega a parte inteira do resultado
+			        		// ARRUMEI ESSE CARALHO!! UFA
 			        		fracionario *= base;
 			        		inteiroFrac = (int)fracionario;
+			        		resultadoBinFrac = inteiroFrac + resultadoBinFrac;
 			        		fracionario = Math.round((fracionario - (int)fracionario)*100);
 			        		fracionario /= 100;
-			        		resultadoBinFrac = Double.toString(fracionario);
-			        		// precisa verificar se ta certo esse bang aqui
-			        	}        	       	
+			        	}
 			        }
-				}
+			}
 		}
 		catch (Exception e){
-			if (base == 0 || base < 0){ // vai que o engraçadinho coloca base 0 pra testar né ahaha
+			if (base == 0 || base < 0){ //vai que o engraçadinho coloca base 0 pra testar né ahaha
 				System.out.println(e.getMessage() + "/n Base digitada é inválida. Favor escolher uma base positiva.");
 			}
 		}
