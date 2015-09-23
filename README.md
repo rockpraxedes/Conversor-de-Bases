@@ -4,4 +4,4 @@ Programa para converter de qualquer base para qualquer, sendo da base 2 a base 2
 ####Precisa ser feito:
 Decimal para qualquer base  | Octal | Hexa | Mais alguma base? | Layout | Botões
   ------------ | ------------- | ------------- | ------------- | ------------- | -------------
-  OK?! | fazer | fazer | fazer | fazer | fazer
+  OK | fazer | fazer | fazer | fazer | fazer
