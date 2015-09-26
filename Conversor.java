@@ -4,39 +4,82 @@ public class Conversor {
 	public Conversor(){ //construtor vazio
 	}
 	
-	public String DecimalParaQualquerBase(double numDecimal, int base){
-		String resultadoBinarioInteiro = "";
-		String resultadoBinFrac = "";
-		int inteiro, inteiroFrac;
-		double fracionario;
+	public static String Converter(String numeroInt, String numeroFrac, int baseInicial, int baseConversao){
+		int expoente, contador;
+		int digito = 0; //substring
+		int decimalInt = 0;
+		int decimalFrac = 0;
+		String numeroConvertido = "";
+		String numeroString = "";
 		
-		//separando a parte inteira
-		inteiro = (int)numDecimal;
+		//inicializando o expoente para converter numero inteiro para a base 10
+		expoente = numeroInt.length() - 1;
 		
-		//separando parte fracionaria
-		fracionario = Math.round((numDecimal - (int)numDecimal)*100);
-		fracionario /= 100;
-		
-		if (numDecimal == 0 && base > 0){
-			return "0"; //se o numero a ser convertido for = 0, o resultado é 0 né haha
-		}else if (base > 0){
-			while(inteiro > 0) { //convertendo parte inteira do número
-				resultadoBinarioInteiro = (inteiro % base) + resultadoBinarioInteiro;
-				inteiro /= base;
-			}
-			if (fracionario != 0 && fracionario > 0){
-				while (fracionario > 0){ //verificando se o numero nao é inteiro
-					// multiplica 0.XX, pega a parte inteira do resultado
-					// ARRUMEI ESSE CARALHO!! UFA
-					fracionario *= base;
-					inteiroFrac = (int)fracionario;
-					resultadoBinFrac = inteiroFrac + resultadoBinFrac;
-					fracionario = Math.round((fracionario - (int)fracionario)*100);
-					fracionario /= 100;
+		if (baseInicial < 2 || baseInicial > 20 || baseConversao < 2 || baseConversao > 20){
+			return " ";
+		}else{
+			//convertendo parte inteira para decimal
+			//contador - para identificar qual posição calcular da string, nao pode ultrapassar o tamanho da string digitada pelo usuário
+			//expoente - calcular base 10 ----> PRECISA VER COMO FAZ PARTE FRACIONARIA
+			for (contador = 0; contador < numeroInt.length(); contador++, expoente--) {
+				digito = Integer.parseInt(numeroInt.substring(contador, (contador + 1)), 20);
+				if (digito > baseInicial) {
+					return " ";
+				}else {
+					decimalInt += digito * Math.pow(baseInicial, expoente);
 				}
 			}
-		}else{
-			System.out.println("Base digitada é inválida. Favor escolher uma base positiva.");
+			
+			//convertendo a base fracionaria
+			for(contador = 0, expoente = -1; contador < numeroFrac.length(); contador++, expoente--){
+				digito = Integer.parseInt(numeroFrac.substring(contador, (contador + 1)), 20);
+				if (digito > baseInicial){
+					return " ";
+				}else{
+					decimalFrac += digito * Math.pow(baseInicial, expoente);
+				}
+			}
 		}
-		return resultadoBinarioInteiro + resultadoBinFrac; // ta certo esse retorno aqui? nao tenho certeza
+        
+        	//converter parte inteira para a base pretendida -- CONVERTENTO SÓ PARTE INTEIRA AINDA
+        	while (decimalInt >= baseConversao) {
+        		numeroConvertido += Letras(decimalInt % baseConversao);
+            		decimalInt /= baseConversao;
+        	}
+        	numeroConvertido += Letras(decimalInt % baseConversao);
+        
+        	//inverter a String da parte inteira
+        	for (contador = numeroConvertido.length() - 1; contador >= 0; contador--) {
+        		numeroString += numeroConvertido.charAt(contador);
+        	}
+        	return numeroString;
+    	}
+	
+	//para quando converter Hexa e Vigesimal
+	private static String Letras(int x) {
+		switch (x) {
+			case 10:
+				return "A";
+			case 11:
+				return "B";
+			case 12:
+				return "C";
+			case 13:
+				return "D";
+			case 14:
+				return "E";
+			case 15:
+				return "F";
+			case 16:
+				return "G";
+			case 17:
+				return "H";
+			case 18:
+				return "I";
+			case 19:
+				return "J";
+			default:
+				return String.valueOf(x);
+		}
 	}
+}
