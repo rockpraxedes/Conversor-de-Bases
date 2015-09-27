@@ -26,19 +26,23 @@ public class Conversor {
 			//convertendo parte inteira para decimal
 			//contador - para identificar qual posição calcular da string, nao pode ultrapassar o tamanho da string digitada pelo usuário
 			//expoente - calcular base 10 ----> PRECISA VER COMO FAZ PARTE FRACIONARIA
-        	for (contador = 0; contador < numeroInt.length(); contador++, expoente--) {
+        	int contaOperacaoInt;
+        	for (contador = 0, contaOperacaoInt = 0; contador < numeroInt.length(); contador++, expoente--, contaOperacaoInt++) {
         		digito = Integer.parseInt(numeroInt.substring(contador, (contador + 1)), 20);
         		if (digito > baseInicial) {
         			return " ";
         		}else {
         			decimalInt += digito * Math.pow(baseInicial, expoente);
+        			if (contaOperacaoInt >=19){ // limite de 20 caracteres
+        				contador = numeroInt.length();
+        			}
         		}
             }
         	
         	//convertendo a base fracionaria
-        	int contaOperacao;
+        	int contaOperacaoFrac;
         	expoente = -1;
-        	for(contador = 0, contaOperacao = 0; contador < numeroFrac.length(); contador++, contaOperacao++){
+        	for(contador = 0, contaOperacaoFrac = 0; contador < numeroFrac.length(); contador++, contaOperacaoFrac++){
         		digitoFracTemp = Integer.parseInt(numeroFrac.substring(contador, (contador + 1)), 20);
         		if (digitoFracTemp > baseInicial){
         			return " ";
@@ -46,7 +50,7 @@ public class Conversor {
         			digitoFrac = (double)digitoFracTemp;
         			decimalFrac += ((digitoFracTemp * Math.pow(baseInicial, expoente))*100)/100;
         			
-        			if (contaOperacao >= 19){
+        			if (contaOperacaoFrac >= 19){ // limite de 20 caracteres
         				contador = numeroFrac.length();
         			}
         		}
@@ -55,20 +59,25 @@ public class Conversor {
         }
 
         //converter parte inteira para a base pretendida
+		int contaConversaoInt = 0;
         while (decimalInt >= baseConversao) {
         	numeroConvertidoInt += Letras(decimalInt % baseConversao);
             decimalInt /= baseConversao;
+            contaConversaoInt++;
+            if (contaConversaoInt >= 19){ // limite de 20 caracteres
+            	decimalInt = baseConversao - 1;
+            }
         }
         numeroConvertidoInt += Letras(decimalInt % baseConversao);
         
       //converter parte fracionaria para a base pretendida
         decimalTemp = (int)(decimalFrac * 100);
-        int contaConversao = 0;
+        int contaConversaoFrac = 0;
         while (decimalTemp >= baseConversao) {
         	numeroConvertidoFrac += Letras(decimalTemp % baseConversao);
             decimalInt /= baseConversao;
-            contaConversao++;
-            if (contaConversao >= 19){
+            contaConversaoFrac++;
+            if (contaConversaoFrac >= 19){ // limite de 20 caracteres
             	decimalTemp = baseConversao - 1;
             }
         }
@@ -83,7 +92,7 @@ public class Conversor {
         for (contador = numeroConvertidoFrac.length() - 1; contador >= 0; contador--) {
         	numeroStringFrac += numeroConvertidoFrac.charAt(contador);
         }
-        return numeroStringInt + "," + numeroConvertidoFrac;
+        return numeroStringInt + "," + numeroStringFrac;
     }
 	
 	private static String Letras(int x) {
