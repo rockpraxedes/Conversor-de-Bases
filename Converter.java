@@ -8,7 +8,8 @@ public class Conversor {
     	int expoente, contador;
 		int digito = 0; //substring
 		double digitoFrac = 0;
-		int digitoFracTemp = 0;
+		double digitoFracTemp = 0;
+		int numFracTemp = 0;
 		int decimalInt = 0;
 		double decimalFrac = 0;
 		int decimalTemp = 0;
@@ -71,17 +72,17 @@ public class Conversor {
         numeroConvertidoInt += Letras(decimalInt % baseConversao);
         
       //converter parte fracionaria para a base pretendida
-        decimalTemp = (int)(decimalFrac * 100);
+        expoente = -1;
         int contaConversaoFrac = 0;
-        while (decimalTemp >= baseConversao) {
-        	numeroConvertidoFrac += Letras(decimalTemp % baseConversao);
-            decimalInt /= baseConversao;
+        while ((decimalFrac * 100) >= baseConversao) {
+        	decimalFrac = (((decimalFrac - (int)decimalFrac)) * baseConversao);
+    		decimalTemp = (int)decimalFrac;
+            numeroConvertidoFrac += Letras(decimalTemp);
             contaConversaoFrac++;
             if (contaConversaoFrac >= 19){ // limite de 20 caracteres
             	decimalTemp = baseConversao - 1;
             }
         }
-        numeroConvertidoFrac += Letras(decimalInt % baseConversao);
 
         //inverter a String da parte inteira
         for (contador = numeroConvertidoInt.length() - 1; contador >= 0; contador--) {
@@ -120,6 +121,5 @@ public class Conversor {
 			default:
 				return String.valueOf(x);
 		}
-		
 	}
 }
